@@ -1,0 +1,118 @@
+.advisor-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+.advisor-form, .advisor-results { padding: 24px; }
+.advisor-form { display: grid; gap: 17px; overflow: visible; }
+.advisor-form h2, .advisor-result-head h2 { font-size: 20px; margin: 0; }
+.advisor-field label, .advisor-picker label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 650;
+}
+.advisor-form input, .advisor-form select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  padding: 8px 11px;
+  background: var(--bg);
+  color: var(--ink);
+}
+.advisor-form p { margin: 7px 0 0; }
+.advisor-form button:disabled, .advisor-paging button:disabled {
+  opacity: .55;
+  cursor: default;
+}
+.advisor-picker { position: relative; min-width: 0; }
+.advisor-options {
+  position: absolute;
+  z-index: 4;
+  top: calc(100% - 18px);
+  width: 100%;
+  max-height: 260px;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 12px 24px #0004;
+}
+.advisor-options [role="option"], .advisor-no-model { padding: 9px 12px; }
+.advisor-options [role="option"] { cursor: pointer; }
+.advisor-options [role="option"]:hover, .advisor-options [aria-selected="true"] { background: var(--pale); }
+.advisor-options strong, .advisor-options small { display: block; overflow-wrap: anywhere; }
+.advisor-options small, .advisor-memory small { color: var(--muted); }
+.advisor-results { min-height: 220px; min-width: 0; }
+.advisor-results > .empty { min-height: 175px; }
+.advisor-result-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  justify-content: space-between;
+  border-bottom: 0;
+}
+.advisor-result-head p { margin: 0 0 5px; }
+.advisor-result-head h2 { overflow-wrap: anywhere; }
+.advisor-model-meta { margin: 4px 0 0; }
+.advisor-memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+}
+.advisor-memory {
+  display: grid;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  background: var(--surface);
+  text-align: left;
+}
+.advisor-memory:hover { border-color: var(--primary); }
+.advisor-memory.on { border-color: var(--primary); background: var(--pale); }
+.advisor-memory span { color: var(--muted); font-size: 12px; }
+.advisor-memory strong { font-size: 19px; font-variant-numeric: tabular-nums; }
+.advisor-assumptions { margin: 12px 0 18px; }
+.advisor-match-summary {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.advisor-recommendations, .advisor-cloud {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.advisor-option, .advisor-cloud article {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 13px;
+  overflow-wrap: anywhere;
+}
+.advisor-option-label { color: var(--primary); font-size: 12px; font-weight: 650; margin: 0 0 8px; }
+.advisor-hardware-name { display: flex; align-items: center; gap: 8px; }
+.advisor-hardware-name h3, .advisor-cloud h3 { font-size: 14px; margin: 0; }
+.advisor-option dl { margin: 10px 0 0; }
+.advisor-option dl div { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+.advisor-option dt { color: var(--muted); font-size: 12px; }
+.advisor-option dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.advisor-option p.small, .advisor-cloud p { margin: 7px 0 0; }
+.advisor-expand { padding-top: 14px; margin-top: 14px; border-top: 1px solid var(--line); }
+.advisor-expand summary { color: var(--primary); cursor: pointer; font-weight: 650; }
+.advisor-table table { min-width: 600px; }
+.advisor-table td { white-space: nowrap; }
+.advisor-paging { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 10px; }
+.advisor-attribution { margin: 16px 0; }
+.advisor-attribution a, .advisor-result-head a, .advisor-cloud a { color: var(--primary); }
+@media (max-width: 850px) {
+  .advisor-layout { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .advisor-form, .advisor-results { padding: 16px; }
+  .advisor-recommendations, .advisor-cloud { grid-template-columns: minmax(0, 1fr); }
+  .advisor-memory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

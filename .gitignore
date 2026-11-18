@@ -1,0 +1,17 @@
+SECRETS.local.md
+SECRETS.local.md.*.tmp
+.env
+.env.*
+*.local.*
+*.pem
+*.key
+*.pfx
+*.p12
+*.log
+.DS_Store
+Thumbs.db
+node_modules/
+_staging/
+.playwright-cli/
+.vscode/
+.idea/

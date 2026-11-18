@@ -1,0 +1,164 @@
+/* Hardware comparison */
+body[data-page="hardware"] .nav { max-width: 1440px; }
+body[data-page="hardware"] main { max-width: 1440px; padding-top: 20px; }
+.hardware-intro { margin-bottom: 16px; }
+.hardware-intro h1 { font-size: 28px; line-height: 1.25; margin: 0 0 12px; }
+.hardware-filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.hardware-filter-row .segments { flex-wrap: wrap; }
+.hardware-filter-row .segments button { padding: 6px 13px; }
+.hardware-filter-row button[aria-haspopup="dialog"]::after {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  vertical-align: 3px;
+  margin-left: 7px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+.hardware-search {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: var(--surface);
+  color: var(--ink);
+}
+.hardware-filter-row .hardware-search { flex: 1 1 220px; max-width: 350px; }
+.hardware-picker-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+.hardware-picker-tools button { padding: 4px 10px; font-size: 12px; }
+.hardware-picker-list { max-height: min(45vh, 410px); overflow: auto; margin: 8px 0 12px; }
+.hardware-picker-label { position: sticky; top: 0; margin: 0; padding: 4px 8px; background: var(--surface); color: var(--muted); font-size: 12px; }
+.hardware-picker-option {
+  display: grid;
+  grid-template-columns: 20px 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--row-line);
+  cursor: pointer;
+}
+.hardware-picker-option:hover, .hardware-picker-option:focus-within { background: var(--row-hover); }
+.hardware-option-name { overflow-wrap: anywhere; }
+.hardware-picker-option .brand-icon { width: 28px; height: 28px; }
+.hardware-picker-option .brand-icon img { width: 22px; height: 22px; }
+.hardware-picker-option small, .hardware-picker-actions span { color: var(--muted); font-size: 12px; }
+.hardware-picker-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: end; gap: 8px; }
+.hardware-picker-actions span { margin-right: auto; }
+.featured-chart { margin-bottom: 14px; }
+.featured-chart .panel-head, .full-catalog .panel-head { padding: 11px 20px 7px; }
+.featured-chart .panel-head h2, .full-catalog .panel-head h2 { margin: 0; }
+.chart-scale-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; }
+.chart-scale-controls .segments { padding: 3px; }
+.chart-scale-controls .segments button { font-size: 12px; padding: 4px 9px; }
+.memory-scroll { margin: 0 20px 5px; overflow-x: auto; }
+.memory-columns {
+  --plot-height: 150px;
+  --axis-width: 48px;
+  --model-width: 53px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--models), minmax(0, 1fr));
+  min-width: calc(var(--axis-width) + var(--model-width) * var(--models));
+  padding: 18px 4px 0 var(--axis-width);
+  gap: 3px;
+}
+.memory-grid { position: absolute; top: 18px; left: var(--axis-width); right: 4px; height: var(--plot-height); }
+.memory-grid span { position: absolute; left: 0; right: 0; border-top: 1px solid var(--grid); }
+.memory-grid b {
+  position: absolute;
+  right: calc(100% + 7px);
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.memory-column {
+  position: relative;
+  display: grid;
+  grid-template-rows: var(--plot-height) minmax(45px, auto);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--ink);
+  align-items: start;
+}
+.memory-column:is(:hover, :focus-visible) { background: var(--row-hover); }
+.memory-column:focus-visible { outline-offset: -2px; }
+.memory-plot { position: relative; height: 100%; }
+.memory-fill {
+  position: absolute;
+  inset: auto 0 0;
+  width: min(38px, 64%);
+  height: var(--capacity);
+  margin: auto;
+  border-radius: 4px 4px 0 0;
+  background: var(--brand);
+}
+.memory-unified .memory-fill {
+  background: repeating-linear-gradient(135deg, var(--brand) 0 4px,
+    color-mix(in srgb, var(--brand), var(--surface) 52%) 4px 7px);
+}
+.memory-plot strong {
+  position: absolute;
+  inset: auto 0 calc(var(--capacity) + 2px);
+  font-size: 11px;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+.memory-column-label {
+  padding: 5px 1px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.24;
+  overflow-wrap: anywhere;
+}
+.memory-column-label small, .hardware-basis { display: block; color: var(--muted); font-size: 10px; }
+.memory-scroll .empty { min-height: 135px; }
+.featured-chart .chart-footer, .full-catalog .chart-footer { padding: 7px 20px; }
+.full-catalog .chart-footer a { color: var(--primary); }
+body[data-page="hardware"] .hardware-table { min-width: 780px; table-layout: fixed; }
+.hardware-table th:first-child { width: 24%; }
+.hardware-table th:nth-child(2) { width: 16%; }
+.hardware-table :is(td, th) { padding: 9px 12px; }
+.hardware-table th { font-size: 12px; }
+.hardware-table :is(td, th):nth-child(n+3) { text-align: right; font-variant-numeric: tabular-nums; }
+.hardware-table td { overflow: hidden; text-overflow: ellipsis; }
+.hardware-table .product-cell { gap: 8px; }
+.hardware-table .brand-icon { flex-basis: 28px; width: 28px; height: 28px; }
+.hardware-table .brand-icon img { width: 24px; height: 24px; }
+.hardware-model-cell { min-width: 0; }
+.hardware-table .model-name {
+  display: block;
+  line-height: 1.45;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hardware-table .empty { display: table-cell; height: 80px; text-align: left; }
+.hardware-pagination[hidden] { display: none; }
+.hardware-pagination-top {
+  margin: -4px 0 12px;
+  padding: 0;
+  border: 0;
+}
+.hardware-pagination-top :is(button, select) { padding: 5px 9px; font-size: 12px; }
+@media (max-width: 480px) {
+  body[data-page="hardware"] main { padding-top: 16px; }
+  .hardware-intro h1 { font-size: 24px; }
+  .hardware-filter-row .segments { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
+  .hardware-filter-row .segments button { padding: 6px 3px; font-size: 12px; }
+  .featured-chart .panel-head, .full-catalog .panel-head,
+  .featured-chart .chart-footer, .full-catalog .chart-footer { padding-left: 12px; padding-right: 12px; }
+  .memory-scroll { margin-left: 12px; margin-right: 12px; }
+  .memory-columns { --plot-height: 124px; --axis-width: 42px; --model-width: 59px; }
+  .hardware-picker-option { grid-template-columns: 20px 28px minmax(0, 1fr); column-gap: 5px; row-gap: 1px; }
+  .hardware-picker-option small { grid-column: 3; }
+}
