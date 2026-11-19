@@ -1,46 +1,19 @@
-// Small, independently sourced specification catalog for this demo.
-const HARDWARE_SOURCE_DATE = '2026-11-18';
-const HARDWARE = [
-  {
-    id:'4060', name:'RTX 4060', brand:'NVIDIA', tier:'consumer', type:'card',
-    architecture:'Ada Lovelace', memory:8, bandwidth:null, tdp:115,
-    source:'https://www.nvidia.com/en-eu/geforce/graphics-cards/40-series/rtx-4060-4060ti/',
-  },
-  {
-    id:'4090', name:'RTX 4090', brand:'NVIDIA', tier:'consumer', type:'card',
-    architecture:'Ada Lovelace', memory:24, bandwidth:1008,
-    source:'https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf',
-  },
-  {
-    id:'5090', name:'RTX 5090', brand:'NVIDIA', tier:'consumer', type:'card',
-    architecture:'Blackwell', memory:32, bandwidth:1792,
-    source:'https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf',
-  },
-  {
-    id:'9070xt', name:'Radeon RX 9070 XT', brand:'AMD', tier:'consumer', type:'card',
-    architecture:'RDNA 4', memory:16, bandwidth:640,
-    source:'https://www.amd.com/en/products/graphics/desktops/radeon/9000-series/amd-radeon-rx-9070xt.html',
-  },
-  {
-    id:'p6000', name:'RTX PRO 6000 Blackwell 工作站版', brand:'NVIDIA', tier:'workstation', type:'card',
-    architecture:'Blackwell', memory:96, bandwidth:1792, tdp:600,
-    source:'https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-6000/',
-  },
-  {
-    id:'h200', name:'H200 SXM', brand:'NVIDIA', tier:'enterprise', type:'card',
-    architecture:'Hopper', memory:141, bandwidth:4800, tdp:700, fp8:3958, fp16:1979,
-    source:'https://www.nvidia.com/en-us/data-center/h200/',
-    sourceNotes:['FP8 和 FP16 为厂商公布的稀疏 Tensor Core 峰值，TDP 为可配置上限。'],
-  },
-  {
-    id:'spark', name:'DGX Spark (GB10)', brand:'NVIDIA', tier:'workstation', type:'system',
-    architecture:'Grace Blackwell', memory:128, bandwidth:273,
-    source:'https://docs.nvidia.com/dgx/dgx-spark/hardware.html',
-  },
-  {
-    id:'studio', name:'Mac Studio · M5 Max', brand:'Apple', tier:'workstation', type:'system',
-    architecture:'M5 Max', memory:128, bandwidth:614,
-    source:'https://www.apple.com/mac-studio/specs/',
-    sourceNotes:['示例为 40 核 GPU、128 GB 统一内存配置。'],
-  },
-];
+// 原选型目录的讨论参考规格；缺失参数和国内采购价保留 null，Flopper 快照另行合并。
+const SOURCES={nv:'https://www.nvidia.com/en-us/geforce/graphics-cards/compare/',pro:'https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/',amd:'https://www.amd.com/en/products/specifications/graphics.html',apple:'https://www.apple.com.cn/mac-studio/specs/',asc:'https://www.hiascend.com/developer/techArticles/20251212-1'};
+const CURATED_HARDWARE=[
+ ['3060','RTX 3060','NVIDIA','consumer',12,360,'nv'],['4060','RTX 4060','NVIDIA','consumer',8,272,'nv'],['4090','RTX 4090','NVIDIA','consumer',24,1008,'nv'],['5060','RTX 5060','NVIDIA','consumer',8,448,'nv'],['5070','RTX 5070','NVIDIA','consumer',12,672,'nv'],['5080','RTX 5080','NVIDIA','consumer',16,960,'nv'],['5090','RTX 5090','NVIDIA','consumer',32,1792,'nv'],
+ ['9060','Radeon RX 9060','AMD','consumer',8,288,'amd'],['9070','Radeon RX 9070 XT','AMD','consumer',16,640,'amd'],
+ ['p5000','RTX PRO 5000 Blackwell','NVIDIA','workstation',48,null,'pro'],['p5500','RTX PRO 5500 Blackwell','NVIDIA','workstation',84,1398,'https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-5500/'],['p6000','RTX PRO 6000 Blackwell','NVIDIA','workstation',96,1792,'pro'],
+ ['l20','L20','NVIDIA','enterprise',48,null,'https://docs.nvidia.com/ai-enterprise/release-8/latest/infra-software/vgpu/reference/ada-lovelace.html'],['a100','A100 PCIe 80GB','NVIDIA','enterprise',80,null,'https://docs.nvidia.com/datacenter/tesla/mig-user-guide/latest/supported-gpus.html'],['h20','H20','NVIDIA','enterprise',96,null,'https://docs.nvidia.com/datacenter/tesla/mig-user-guide/latest/supported-gpus.html'],['atlas','Atlas 300I A2','华为昇腾','enterprise',64,null,'asc'],['910c','昇腾 910C 系列','华为昇腾','enterprise',null,null,'https://www.huawei.com/cn/news/2025/9/hc-xu-keynote-speech'],['bw','BW1000','海光','enterprise',null,null,'https://github.com/HYGON-AI/pytorch-das'],['mlu','MLU590','寒武纪','enterprise',null,null,'https://github.com/Cambricon/vllm-mlu'],['s5000','MTT S5000','摩尔线程','enterprise',null,null,'https://docs.mthreads.com/driver-linux-server/driver-linux-server-doc-online/MTT_S5000/introduction/'],
+ ['max395','MS-S1 MAX · Max+ 395','AMD','workstation',128,256,'https://minisforum.cn/products/MS-S1-MAX-128','system'],['max495','MS-S1 MAX-P495','AMD','workstation',192,273,'https://minisforum.cn/products/MS-S1-MAX-P495','system'],['mini','Mac mini · M5 Pro','Apple','workstation',64,307,'https://www.apple.com.cn/mac-mini/specs/','system'],['studio','Mac Studio · M5 Max','Apple','workstation',128,614,'apple','system'],['ultra','Mac Studio · M5 Ultra','Apple','workstation',256,1200,'apple','system'],['spark','DGX Spark · GB10','NVIDIA','workstation',128,273,'https://www.nvidia.com/en-us/products/workstations/dgx-spark/','system']
+].map(([id,name,brand,tier,memory,bandwidth,source,type='card'])=>({id,name,brand,tier,memory,bandwidth,source:SOURCES[source]||source,type,price:null,curated:true,dataOrigin:'discussion',acceleratorCount:1,catalogRank:1000,status:'参考规格 · 待复核'}));
+const TIERS={consumer:'消费级',workstation:'工作站级',enterprise:'企业级'};
+
+// Only exact SKU matches are merged; a generic Ascend 910C series is kept separate.
+const FLOPPER_MATCHES={'RTX PRO 6000 Blackwell Workstation Edition':'p6000','MTT S5000':'s5000','GeForce RTX 3060 12GB':'3060','GeForce RTX 4060 8GB':'4060','GeForce RTX 4090 24GB':'4090','GeForce RTX 5060 8GB':'5060','GeForce RTX 5070 12GB':'5070','GeForce RTX 5080 16GB':'5080','GeForce RTX 5090 32GB':'5090','Radeon RX 9060 8GB':'9060','Radeon RX 9070 XT 16GB':'9070','RTX PRO 5000 Blackwell 48GB':'p5000','RTX PRO 5500 Blackwell Workstation Edition':'p5500','A100 PCIe 80GB':'a100','H20 96GB':'h20','L20 48GB':'l20','MLU590':'mlu'};
+const mergedCatalog=new Map(CURATED_HARDWARE.map((d,i)=>[d.id,{...d,catalogRank:1000+i}]));
+for(const imported of FLOPPER_SNAPSHOT.rows){
+ const existingId=FLOPPER_MATCHES[imported.rawName],previous=existingId?mergedCatalog.get(existingId):null;
+ mergedCatalog.set(previous?previous.id:imported.id,previous?{...previous,...imported,id:previous.id,tier:previous.tier,curated:true,originalName:previous.name,originalSource:previous.source,previousReference:{memory:previous.memory,bandwidth:previous.bandwidth}}:imported);
+}
+const HARDWARE=[...mergedCatalog.values()];

@@ -439,6 +439,3 @@ tbody tr:hover { background: var(--row-hover); }
   }
   .links a { height: 42px; }
 }
-
-
-.site-mark { display: grid; place-items: center; border-radius: 8px; background: var(--action); color: #fff; letter-spacing: 0; font-size: 13px; }

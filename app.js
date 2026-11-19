@@ -13,19 +13,19 @@ const sections = [
 
 const footer = `<div class="footer">
   <span>算力坐标 Compute Axis</span>
-  <span>规格示例 · 容量和速度为估算</span>
+  <span>来源规格待复核 · 国内采购价与本地实测待补</span>
 </div>`;
 
 $('#app').innerHTML = `<header>
   <div class="nav">
     <div class="nav-brand">
-      <a class="logo" href="index.html"><span class="site-logo site-mark" aria-hidden="true">CA</span><span class="site-name">算力坐标 <small>Compute Axis</small></span></a>
+      <a class="logo" href="index.html"><img class="site-logo" src="assets/compute-axis.svg" alt="" aria-hidden="true" width="33" height="33"><span class="site-name">算力坐标 <small>Compute Axis</small></span></a>
     </div>
     <nav class="links" aria-label="主要导航">
       ${sections.map(([id, href, label]) => `<a href="${href}"${id === page ? ' class="active" aria-current="page"' : ''}>${label}</a>`).join('')}
     </nav>
     <div class="nav-actions">
-      <span class="draft">公开演示</span>
+      <span class="draft">交互初稿 · 数据待核验</span>
       <button class="theme-toggle" id="theme-toggle" type="button"></button>
     </div>
   </div>
@@ -45,6 +45,7 @@ function updateThemeToggle() {
   themeToggle.setAttribute('aria-pressed', String(dark));
   themeToggle.title = label;
   themeToggle.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${dark ? sunIcon : moonIcon}</svg><span>${dark ? '日间' : '夜间'}</span>`;
+  updateBrandIconTheme(dark);
 }
 
 themeToggle.addEventListener('click', () => {

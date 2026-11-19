@@ -1,63 +1,33 @@
 # 算力坐标 Compute Axis
 
-准备在本地运行 AI 模型时，可以先查硬件规格，再按模型和量化精度筛选候选配置。模型对比页也提供交互式图表，便于理解如何比较评分、耗时与成本。
+查硬件规格，按准备部署的模型筛选设备，对比 Artificial Analysis 的模型评测。
 
-[硬件对比](#硬件对比) · [硬件选型](#硬件选型) · [模型对比](#模型对比) · [本地运行](#本地运行)
+[硬件对比](#硬件对比) · [硬件选型](#硬件选型) · [模型对比](#模型对比) · [部署](#部署)
 
-## 三大功能
+## 硬件对比
 
-### 硬件对比
+目录收录 329 款硬件。可以按型号、厂商和类别筛选，显存图、内存带宽图与规格表同步更新。图表提供线性刻度和低值放大。
 
-按型号、厂商或硬件类别筛选。显存图、内存带宽图和规格表同步更新。图表可在线性刻度和低值放大之间切换，点开型号可查看参数及厂商来源。
+![硬件对比页的显存容量和内存带宽图](docs/screenshots/hardware-comparison.png)
 
-![硬件对比页，包含显存容量图、内存带宽图和可排序的规格表](docs/screenshots/hardware-comparison.png)
+## 硬件选型
 
-### 硬件选型
+可以搜索 5,056 个模型条目，按 Q4、Q6、Q8、FP16 估算显存并筛选候选配置。默认展示 Qwen3.8-27B。生成速度是基于内存带宽的估算，实际部署需核对上下文、推理框架、驱动和多卡互联。
 
-默认以 **Qwen3.8-27B** 展示推荐。可以搜索其他模型，设置目标生成速度及硬件范围。点击 **Q4、Q6、Q8、FP16** 容量卡，立即重算下方的候选配置。速度按带宽估算上限展示，便于初筛。
+![Qwen3.8-27B 的容量估算和候选硬件](docs/screenshots/hardware-advisor.png)
 
-![硬件选型页，展示 Qwen3.8-27B 的四档量化容量估算及候选配置](docs/screenshots/hardware-advisor.png)
+## 模型对比
 
-### 模型对比
+展示智能指数、任务成本与耗时、输出 Token、成本效益和六领域排名。默认筛选可本地部署的模型，可切换到全部模型。原始快照和最近同步的评测可分别查看。[Artificial Analysis](https://artificialanalysis.ai/zh)
 
-在综合评分、任务开销、评分与成本、分领域排名四张图中比较同一批模型。任务开销可切换成本、耗时和输出 Token 数，搜索和勾选同步作用于四张图。
+## 部署
 
-**图表中的模型与数值均为演示数据。** 真实评测可在 [Artificial Analysis](https://artificialanalysis.ai/zh) 查看。
+- 用仓库链接所指分支。Node.js 24 下运行 `npm ci` 和 `npm run build`。自托管用 `npm start` 并接入 HTTPS；托管平台可读取仓库中的平台配置。
+- 在服务端设置 `AA_API_KEY`、`COMPUTE_AXIS_ADMIN_PASSWORD`（随机密码，至少 24 字符）和站点 `COMPUTE_AXIS_ORIGIN`。自托管设置 `AA_STATE_FILE` 为持久化 JSON 文件的绝对路径，并用 `AA_PUBLIC_DATA=1` 开启授权的公开图表。使用平台调度时配置 `CRON_SECRET` 和私有存储，授权的初始快照放在 `compute-axis/aa-snapshot.json`。
+- 核对线上提交号和三个页面，访问 `/admin/aa`（账号 `admin`）验证密码保护并手动同步。每天北京时间 03:00 调度，以托管平台实际执行记录验收。
 
-![模型对比页，展示虚构模型的综合评分和任务开销](docs/screenshots/model-comparison.png)
+## 数据来源
 
-## 本地运行
+硬件参数参考 Flopper 和厂商资料，硬件选型目录参考 LocalLLM Advisor。品牌图片仅用于识别，原始出处见 [品牌资料](assets/brands/SOURCES.md)。[Flopper](https://flopper.io/gpus) · [LocalLLM Advisor](https://www.localllm-advisor.com/search/hardware)
 
-可以直接打开 `index.html`，也可以用 Python 3 启动本机 HTTP 预览。
-
-```sh
-git clone https://github.com/blackq166s-web/compute-axis.git
-cd compute-axis
-python -m http.server 8000 --bind 127.0.0.1
-```
-
-打开 [http://127.0.0.1:8000](http://127.0.0.1:8000/)。网站使用原生 HTML、CSS 和 JavaScript，浏览器直接加载随仓库提供的数据。
-
-## 目录结构
-
-| 路径 | 用途 |
-| --- | --- |
-| `index.html`、`advisor.html`、`models.html` | 三个页面入口 |
-| `pages/` | 硬件图表、筛选、选型和模型对比 |
-| `app.js`、`theme.js`、`brand-ui.js`、`style.css` | 导航、主题、文字标识和通用样式 |
-| `data.js` | 八项硬件示例及逐项厂商链接 |
-| `advisor-data.js` | 三项模型元数据，复用同一份硬件规格 |
-| `model-demo-data.js` | 虚构评测数据，用于演示图表和筛选 |
-| `docs/screenshots/` | 从静态演示版截取的三张页面截图 |
-
-## 数据和估算
-
-- 硬件示例取自厂商规格。统一内存总量与独显显存分别标注，空白字段表示示例目录暂无数据。[NVIDIA](https://www.nvidia.com/en-us/data-center/h200/) · [AMD](https://www.amd.com/en/products/graphics/desktops/radeon/9000-series/amd-radeon-rx-9070xt.html) · [Apple](https://www.apple.com/mac-studio/specs/)
-- 模型参数量取自厂商模型卡。[Qwen3.8-27B](https://huggingface.co/Qwen/Qwen3.8-27B) · [Qwen3-8B](https://huggingface.co/Qwen/Qwen3-8B) · [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B)
-- 容量估算按参数量乘以每参数位数再除以 8，另加 15% 余量。统一内存和多卡容量分别按标称总量的 75% 和 95% 粗筛。生成速度用单设备带宽除以权重大小，表示仅考虑带宽时的理论上限。实际部署需核对上下文、推理框架、驱动以及多卡互联。
-- 选型交互参考 LocalLLM Advisor。[参考页面](https://www.localllm-advisor.com/search/hardware)
-- Artificial Analysis Free API 数据供内部使用，正式数据的分发权限以提供方条款为准。[AA 数据权限说明](https://artificialanalysis.ai/data-api)
-
-## 许可
-
-本仓库的代码许可待维护者确定。第三方名称和资料按各自的权利和条款使用。
+仓库代码的许可待维护者确定。第三方名称、图标和数据沿用各自的授权条件。

@@ -2,7 +2,13 @@ const hardwareGroups = [
   ['consumer', '消费级'], ['workstation', '工作站级'], ['enterprise', '企业级'], ['system', '统一内存'],
 ];
 
-const starterHardware = ['4060', '4090', '5090', 'p6000', 'h200', 'spark'];
+const starterHardware = [
+  '4060', '4090', '5060', '5070', '5080', '5090', 'p6000', 'p5500',
+  'flopper-025cb182efa7', 'flopper-cf23307a0535', 'flopper-80c729f4eaae', 'flopper-a5cf4db00731',
+  'flopper-e398470ee52e', 'flopper-e209dec7f4b0', 'flopper-6557cf6255e8',
+  'flopper-105ec7e0251e', 'flopper-b97368172a44', 'flopper-c871a2cd5a41',
+  'flopper-59475f951457', 'flopper-f04fff7f74dd',
+];
 
 function isUnifiedHardware(row) {
   return row.type === 'system' || row.memoryKind === 'unified';
@@ -13,8 +19,13 @@ function hardwareMemoryBasis(row) {
   return row.acceleratorCount > 1 ? `${row.acceleratorCount} GPU 合计` : '';
 }
 
+function hardwareFullName(row) {
+  return ['spark', 'flopper-6557cf6255e8'].includes(row.id) ? 'DGX Spark (GB10)' : row.name;
+}
+
 function hardwareModelName(row) {
-  return row.name.replace(/^(GeForce|Radeon) /, '')
+  if (row.id === 'flopper-e209dec7f4b0') return 'Ryzen AI Max+ 395';
+  return hardwareFullName(row).replace(/^(GeForce|Radeon) /, '')
     .replace(/^(RTX PRO \d+) Blackwell (.*?)(?: Edition)?$/, '$1 $2')
     .replace(/ Workstation(?: Edition)?$/, '')
     .replace(/\bServer(?: Edition)?\b/, '服务器版')
@@ -96,7 +107,7 @@ function hardwareChartColumns(rows, key, expanded) {
   return `<div class="memory-columns" style="--models:${rows.length}">
     <div class="memory-grid" aria-hidden="true">${ticks}</div>
     ${rows.map(row => {
-      const fullName = row.name;
+      const fullName = hardwareFullName(row);
       const basis = hardwareMemoryBasis(row);
       const amount = row[key];
       const value = amount == null ? '—' : amount.toLocaleString('zh-CN');

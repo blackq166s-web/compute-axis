@@ -1,4 +1,4 @@
-const captureDate = HARDWARE_SOURCE_DATE;
+const captureDate = FLOPPER_SNAPSHOT.capturedAt.slice(0, 10);
 const hardwareColumns = [
   ['name', 'GPU'], ['architecture', 'Architecture'], ['memory', 'Memory'],
   ['bandwidth', 'Bandwidth'], ['fp8', 'FP8'], ['fp16', 'FP16'], ['tdp', 'TDP'],
@@ -23,13 +23,13 @@ function detail(id) {
   const basis = hardwareMemoryBasis(row);
   const labels = {memory:isUnifiedHardware(row) ? '统一内存总量' : '显存容量', bandwidth:'带宽',
     fp8:'FP8 理论峰值', fp16:'FP16 理论峰值', tdp:'TDP / 设计功耗'};
-  const provenance = `厂商规格 · ${captureDate} 核对`;
+  const provenance = row.dataOrigin === 'flopper' ? `Flopper GPU 规格 · ${captureDate} 快照` : '原选型资料';
   $('#dialog-body').innerHTML = `<span class="badge">${esc(row.brand)}</span>
-    <h2>${esc(row.name)}</h2>
+    <h2>${esc(hardwareFullName(row))}</h2>
     <p class="small">${esc(row.architecture || '架构未披露')}${basis ? ' · ' + basis : ''}</p>
     <div class="detail-grid">${Object.entries(labels).map(([key,label]) =>
       `<div class="metric"><span class="small">${label}</span><strong>${hardwareMetric(row,key)}</strong></div>`).join('')}</div>
-    ${(row.sourceNotes || []).map(note => `<p class="notice">${esc(note)}</p>`).join('')}
+    ${(row.sourceNotes || []).filter(note => !/价格|租价|租用|\$/.test(note)).map(note => `<p class="notice">${esc(note)}</p>`).join('')}
     <p class="small">${provenance} · 理论规格</p>
     <a class="outline" href="${esc(row.source)}" target="_blank" rel="noopener">查看资料来源 ↗</a>`;
   $('#dialog').showModal();
@@ -82,7 +82,7 @@ function openHardwarePicker(group) {
   const option = row => `<label class="hardware-picker-option">
     <input type="checkbox" value="${esc(row.id)}" ${picked.has(row.id) ? 'checked' : ''}>
     ${transparentBrandIcon(row.brand)}
-    <span class="hardware-option-name" title="${esc(row.name)}">${esc(hardwareModelName(row))}</span>
+    <span class="hardware-option-name" title="${esc(hardwareFullName(row))}">${esc(hardwareModelName(row))}</span>
     <small>${esc(row.brand)} · ${hardwareMetric(row,'memory')}</small></label>`;
   function showOptions() {
     const query = search.value.trim();
@@ -168,7 +168,7 @@ function renderHardware() {
     const basis = hardwareMemoryBasis(row);
     return `<tr data-hardware-row="${esc(row.id)}">
       <td><div class="product-cell">${transparentBrandIcon(row.brand)}
-        <div class="hardware-model-cell"><button type="button" class="model-name" data-detail="${esc(row.id)}" title="${esc(row.name)}">${esc(hardwareModelName(row))}</button>
+        <div class="hardware-model-cell"><button type="button" class="model-name" data-detail="${esc(row.id)}" title="${esc(hardwareFullName(row))}">${esc(hardwareModelName(row))}</button>
         ${basis ? `<small class="hardware-basis">${basis}</small>` : ''}</div>
       </div></td>
       <td>${esc(row.architecture ?? '—')}</td>
@@ -195,7 +195,7 @@ function hardware() {
       <div class="panel-head row between"><h2 id="catalog-heading">硬件规格</h2><span class="small" id="shown-count" aria-live="polite"></span></div>
       <div class="table-scroll" tabindex="0" role="region" aria-label="硬件规格表"><table class="hardware-table"><thead id="columns"></thead><tbody id="rows"></tbody></table></div>
       ${hardwarePagination('bottom')}
-      <div class="chart-footer">当前为小范围示例目录，可以在型号详情打开厂商规格。</div>
+      <div class="chart-footer">规格以 <a href="https://flopper.io/gpus" target="_blank" rel="noopener">Flopper GPU 目录 ↗</a> 快照为主。每个型号详情提供对应来源。</div>
     </section>` + footer;
 
   $('#main').addEventListener('click', event => {

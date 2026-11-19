@@ -1,0 +1,6 @@
+.env*
+SECRETS.local.md
+aa-bootstrap.json
+node_modules/
+scripts/agentation/
+dist/
