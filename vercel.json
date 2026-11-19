@@ -1,25 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "functions": {
-    "api/aa.js": {
-      "includeFiles": "aa-*-data.js",
-      "maxDuration": 90
-    }
-  },
-  "rewrites": [
-    { "source": "/aa-official-data.js", "destination": "/api/aa?view=data" },
-    { "source": "/admin/aa", "destination": "/api/aa?view=admin" },
-    { "source": "/admin/aa/sync", "destination": "/api/aa?view=admin" }
-  ],
-  "schedules": {
-    "aa-daily": {
-      "path": "/api/aa",
-      "requestMethod": "GET",
-      "schedule": "0 3 * * *",
-      "timezone": "Asia/Shanghai"
-    }
-  }
+  "installCommand": "",
+  "buildCommand": "node scripts/build-vercel.cjs",
+  "outputDirectory": "dist"
 }

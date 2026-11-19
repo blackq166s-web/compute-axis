@@ -8,7 +8,6 @@ const opts = options => options.map(([value,label]) =>
 const sections = [
   ['hardware', 'index.html', '硬件对比'],
   ['advisor', 'advisor.html', '硬件选型'],
-  ['models', 'models.html', '模型对比'],
 ];
 
 const footer = `<div class="footer">
@@ -66,5 +65,4 @@ dialog.addEventListener('click', event => { if (event.target === dialog) dialog.
 switch (page) {
   case 'hardware': hardware(); break;
   case 'advisor': advisor(); break;
-  case 'models': models(); break;
 }

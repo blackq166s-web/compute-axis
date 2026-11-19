@@ -12,10 +12,9 @@ if (fs.existsSync(output)) {
 const resources = [
   'style.css', 'theme.js',
   'data.js', 'flopper-data.js', 'advisor-data.js', 'brand-icons.js', 'brand-ui.js',
-  'aa-admin.css', 'aa-chart-data.js',
   'pages/advisor.js', 'pages/advisor.css', 'pages/hardware.js', 'pages/hardware.css',
-  'pages/hardware-chart.js', 'pages/aa-charts.js', 'pages/aa-charts.css',
-  'pages/model-comparison.js', 'pages/model-comparison.css',
+  'pages/hardware-chart.js',
+  'index.html', 'advisor.html', 'app.js',
 ];
 
 function copy(file) {
@@ -25,12 +24,6 @@ function copy(file) {
 }
 
 for (const file of resources) copy(file);
-for (const file of ['index.html', 'advisor.html', 'models.html', 'app.js']) {
-  const source = fs.readFileSync(path.join(root, file), 'utf8')
-    .replaceAll('assets/site-logo.ico', 'assets/compute-axis.svg')
-    .replace('data-page="models"', 'data-page="models" data-hosted="true"');
-  fs.writeFileSync(path.join(output, file), source);
-}
 
 copy('assets/compute-axis.svg');
 for (const [folder, pattern] of [
