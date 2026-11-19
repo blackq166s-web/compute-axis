@@ -12,14 +12,14 @@ const sections = [
 ];
 
 const footer = `<div class="footer">
-  <span>AI 部署选型 / AI 本地部署选型指南</span>
+  <span>算力坐标 Compute Axis</span>
   <span>规格示例 · 容量和速度为估算</span>
 </div>`;
 
 $('#app').innerHTML = `<header>
   <div class="nav">
     <div class="nav-brand">
-      <a class="logo" href="index.html"><span class="site-logo site-mark" aria-hidden="true">AI</span>AI 部署选型</a>
+      <a class="logo" href="index.html"><span class="site-logo site-mark" aria-hidden="true">CA</span><span class="site-name">算力坐标 <small>Compute Axis</small></span></a>
     </div>
     <nav class="links" aria-label="主要导航">
       ${sections.map(([id, href, label]) => `<a href="${href}"${id === page ? ' class="active" aria-current="page"' : ''}>${label}</a>`).join('')}
