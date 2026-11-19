@@ -31,8 +31,8 @@
 可以直接打开 `index.html`，也可以用 Python 3 启动本机 HTTP 预览。
 
 ```sh
-git clone https://github.com/blackq166s-web/ai-deploy-advisor.git
-cd ai-deploy-advisor
+git clone https://github.com/blackq166s-web/compute-axis.git
+cd compute-axis
 python -m http.server 8000 --bind 127.0.0.1
 ```
 
