@@ -1,5 +1,5 @@
 const { createHash, timingSafeEqual } = require('node:crypto');
-const { get, put, BlobPreconditionFailedError } = require('@vercel/blob');
+const { get, head, put, BlobNotFoundError, BlobPreconditionFailedError } = require('@vercel/blob');
 const { clientSnapshotScript, loadApi, readSnapshot } = require('../scripts/import_aa.cjs');
 
 const pathname = 'compute-axis/aa-snapshot.json';
@@ -25,7 +25,17 @@ async function currentSnapshot(consistent = false) {
 async function synchronize(automatic) {
   const key = process.env.AA_API_KEY?.trim();
   if (!key || !configuredStorage()) return 'missing';
+  const version = await head(pathname).then(blob => blob.etag).catch(error => {
+    if (error instanceof BlobNotFoundError) return null;
+    throw error;
+  });
   const previous = await currentSnapshot(true);
+  // Use the storage metadata ETag for writes; a read can carry a CDN ETag.
+  if (version && previous.etag !== version) {
+    const metadata = await head(pathname);
+    if (metadata.etag !== version) return 'conflict';
+  }
+  if (!version && previous.etag) return 'conflict';
   const checkedAt = previous.data.api?.checkedAt;
   if (automatic && checkedAt && day.format(new Date(checkedAt)) === day.format(new Date())) return 'skipped';
   const api = await loadApi(process.env.AA_API_TIER === 'pro' ? 'pro' : 'free', key);
@@ -33,11 +43,12 @@ async function synchronize(automatic) {
     await put(pathname, JSON.stringify({ ...previous.data, api: { ...api, checkedAt: new Date().toISOString() } }), {
       access: 'private',
       contentType: 'application/json',
-      ...(previous.etag ? { allowOverwrite: true, ifMatch: previous.etag } : { allowOverwrite: false }),
+      cacheControlMaxAge: 60,
+      ...(version ? { allowOverwrite: true, ifMatch: version } : { allowOverwrite: false }),
     });
     return 'ok';
   } catch (error) {
-    if (error instanceof BlobPreconditionFailedError) return 'skipped';
+    if (error instanceof BlobPreconditionFailedError) return 'conflict';
     throw error;
   }
 }
@@ -71,6 +82,7 @@ async function admin(req, res, url) {
     ['ok', '同步成功。'], ['missing', '请在 Vercel 配置 AA 密钥和存储。'],
     ['failed', '同步失败，已保留上次成功的结果。'],
     ['skipped', '已有更新，请刷新查看。'],
+    ['conflict', '快照写入发生冲突，请稍后重试。'],
   ]);
   const notice = messages.get(req.query?.sync ?? url.searchParams.get('sync'));
   res.setHeader('Content-Security-Policy',
@@ -109,7 +121,7 @@ module.exports = async function handler(req, res) {
     const secret = process.env.CRON_SECRET;
     if (!secret || !matches(req.headers.authorization, `Bearer ${secret}`)) return reply(res, 401, '无调度权限。');
     const result = await synchronize(true);
-    return reply(res, result === 'missing' ? 503 : 200, result);
+    return reply(res, result === 'missing' ? 503 : result === 'conflict' ? 409 : 200, result);
   } catch {
     return reply(res, 503, 'AA 服务暂时无法完成请求。');
   }
