@@ -25,7 +25,7 @@ function copy(file) {
 
 for (const file of resources) copy(file);
 
-copy('assets/compute-axis.svg');
+copy('assets/site-logo.ico');
 for (const [folder, pattern] of [
   ['assets/brands', /^[\w.-]+\.(?:svg|png|webp)$/],
   ['assets/brands/transparent', /^[a-z0-9-]+\.png$/],

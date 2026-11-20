@@ -18,7 +18,7 @@ const footer = `<div class="footer">
 $('#app').innerHTML = `<header>
   <div class="nav">
     <div class="nav-brand">
-      <a class="logo" href="index.html"><img class="site-logo" src="assets/compute-axis.svg" alt="" aria-hidden="true" width="33" height="33"><span class="site-name">算力坐标 <small>Compute Axis</small></span></a>
+      <a class="logo" href="index.html"><img class="site-logo" src="assets/site-logo.ico" alt="" aria-hidden="true" width="33" height="33"><span class="site-name">算力坐标 <small>Compute Axis</small></span></a>
     </div>
     <nav class="links" aria-label="主要导航">
       ${sections.map(([id, href, label]) => `<a href="${href}"${id === page ? ' class="active" aria-current="page"' : ''}>${label}</a>`).join('')}
